@@ -1,20 +1,18 @@
-<h5 align="center">
-  <br>
-  <a href="https://www.asyncapi.org"><img src="https://github.com/asyncapi/parser-nodejs/raw/master/assets/logo.png" alt="AsyncAPI logo" width="200"></a>
-  <br>
-  Simulator
-</h5>
+![plot](./github-repobanner-simulator.png)
 <p align="center">
-  <em>The official simulator for simulating scenarios</em>
+  <em>The official application for simulating scenarios</em>
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Ever wondered what it would feel like your application to be the center of interest?
+- Command line library and desktop application for generating asynchronous traffic.
 
-Does it seem distant or difficult to switch from development mode to production mode?
+- Visualize your asyncApi files and test your asynchronous networks.
+
+![Image Alt Text](https://github.com/asyncapi/simulator/blob/master/simulator_screenshot.JPG?raw=true)
+
 
 ---
 
@@ -28,6 +26,25 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 
 Usage
+
+#### Throught desktop application (underDevelopment):     
+```
+npm run desktop
+```
+#### Video Demo :
+
+https://github.com/SumantxD/simulator/assets/65810424/a8f143b8-1ba5-4b8e-bb2a-5e2f4a91c1e1
+
+#### Simulation Configuration YAML :
+
+[Dowload mqtt.zip](https://github.com/asyncapi/simulator/files/13696873/mqtt.zip)
+
+
+
+
+
+#### Throught command line:
+
 
 ```
 simulator -f ./my_api.yaml -s ./scenario.yaml

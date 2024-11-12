@@ -9,8 +9,8 @@ const yamlParser  = require('js-yaml');
  * @param filepathScenario
  * @returns {Promise<(*|*|string|Chai.Assertion)[]>}
  */
-const parseFiles  = async (filepathAsyncApi, filepathScenario) => {
-  const ajv = new Ajv();
+const parseFiles  = async (filepathAsyncApi, filepathScenario,basedir) => {
+  const ajv = new Ajv({allowMatchingProperties: true,strict: true,allErrors: true, verbose: true});
   let asyncApiContent;
   try {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
@@ -18,24 +18,27 @@ const parseFiles  = async (filepathAsyncApi, filepathScenario) => {
   } catch (err) {
     console.log(`\nError in reading the asyncApi file. Details: ${err}`);
   }
-  const asyncApiParsed = await parser.parse(asyncApiContent);
-
+  const asyncApiParsed = await parser.parse(asyncApiContent, {path: basedir});
   let scenarioParsed;
   try {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const scenario = filesystem.readFileSync(filepathScenario,{encoding: 'utf-8',flag: 'r'});
-    scenarioParsed = yamlParser.load(scenario);
+    const scenario = filesystem.readFileSync(String(filepathScenario),{encoding: 'utf-8',flag: 'r'});
+    if (filepathAsyncApi.match(/.yaml$/)) {
+      scenarioParsed = yamlParser.load(scenario);
+    } else {
+      scenarioParsed = JSON.parse(scenario);
+    }
     const validate = ajv.compile(scenarioSpecs[scenarioParsed.version]);
     if (!validate) {
       console.log('\nWrong or unavailable schema version be sure to check the spec for more info.');
     }
-    const valid = validate(scenarioParsed);
+    const valid = ajv.validate(scenarioSpecs[scenarioParsed.version],scenarioParsed);
     if (!valid) {
       console.log(`\nError the provided scenario file does does not comply with the spec of version ${scenarioParsed.version}\nDetails: `,validate.errors);
       process.emit('SIGINT');
     }
   } catch (err) {
-    console.log(`\nError in parsing the scenario file. Details:${err}`);
+    console.log('\nError in parsing the scenario file. Make sure you have set the version property to a valid version.');
   }
   return [asyncApiParsed,scenarioParsed];
 };
